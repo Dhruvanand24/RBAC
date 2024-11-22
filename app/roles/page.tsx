@@ -49,6 +49,7 @@ export default function RolesPage() {
       return;
     }
     addRole(newRole);
+    toast("Role Added Successfully");
     setNewRole({ name: "", permissions: [] });
     setIsAddRoleOpen(false);
   };
@@ -144,7 +145,12 @@ export default function RolesPage() {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => deleteRole(role.id)}>
+                      <AlertDialogAction
+                        onClick={() => {
+                          deleteRole(role.id);
+                          toast("Role Deleted Successfully");
+                        }}
+                      >
                         Continue
                       </AlertDialogAction>
                     </AlertDialogFooter>

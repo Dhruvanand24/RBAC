@@ -111,6 +111,7 @@ export default function UsersPage() {
       return;
     }
     addUser(newUser);
+    toast("User Added Successfully");
     setNewUser({ name: "", email: "", role: "", status: "Active" });
     setIsAddUserOpen(false);
   };
@@ -289,7 +290,12 @@ export default function UsersPage() {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => deleteUser(user.id)}>
+                      <AlertDialogAction
+                        onClick={() => {
+                          deleteUser(user.id);
+                          toast("User deleted Successfully");
+                        }}
+                      >
                         Continue
                       </AlertDialogAction>
                     </AlertDialogFooter>

@@ -44,6 +44,7 @@ export default function PermissionsPage() {
       return;
     }
     addPermission(newPermission);
+    toast("Permission Added Successfully");
     setNewPermission("");
     setIsAddPermissionOpen(false);
   };
@@ -105,7 +106,10 @@ export default function PermissionsPage() {
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={() => deletePermission(permission)}
+                        onClick={() => {
+                          deletePermission(permission);
+                          toast("Permission deleted Successfully");
+                        }}
                       >
                         Continue
                       </AlertDialogAction>
