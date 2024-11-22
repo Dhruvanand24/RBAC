@@ -36,7 +36,7 @@ import {
 import { toast } from "sonner";
 
 export default function RolesPage() {
-  const { roles, permissions, addRole, updateRole, deleteRole } = useAdmin();
+  const { roles, permissions, addRole, deleteRole } = useAdmin();
   const [isAddRoleOpen, setIsAddRoleOpen] = useState(false);
   const [newRole, setNewRole] = useState({
     name: "",
