@@ -1,23 +1,52 @@
-"use client"
+"use client";
 
-import { useState } from 'react'
-import { useAdmin } from '../context/AdminContext'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { useState } from "react";
+import { useAdmin } from "../context/AdminContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { AlertDialog } from "@radix-ui/react-alert-dialog";
+import {
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function PermissionsPage() {
-  const { permissions, addPermission, deletePermission } = useAdmin()
-  const [isAddPermissionOpen, setIsAddPermissionOpen] = useState(false)
-  const [newPermission, setNewPermission] = useState('')
+  const { permissions, addPermission, deletePermission } = useAdmin();
+  const [isAddPermissionOpen, setIsAddPermissionOpen] = useState(false);
+  const [newPermission, setNewPermission] = useState("");
 
   const handleAddPermission = () => {
-    addPermission(newPermission)
-    setNewPermission('')
-    setIsAddPermissionOpen(false)
-  }
+    if (newPermission === "") {
+      toast("All fields are required");
+      return;
+    }
+    addPermission(newPermission);
+    setNewPermission("");
+    setIsAddPermissionOpen(false);
+  };
 
   return (
     <div>
@@ -58,13 +87,36 @@ export default function PermissionsPage() {
             <TableRow key={permission}>
               <TableCell>{permission}</TableCell>
               <TableCell>
-                <Button variant="destructive" onClick={() => deletePermission(permission)}>Delete</Button>
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Button>Delete</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your account and remove your data from our
+                        servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => deletePermission(permission)}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
-

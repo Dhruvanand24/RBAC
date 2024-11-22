@@ -3,7 +3,7 @@ import { Users, Shield, Key } from "lucide-react";
 
 export function Sidebar() {
   return (
-    <aside className="bg-gray-800 text-white w-64 min-h-screen p-4 hidden lg:block">
+    <aside className="bg-black m-2 text-white w-64 rounded-lg  p-4 hidden lg:block">
       <nav className="space-y-2">
         <Link
           href="/"

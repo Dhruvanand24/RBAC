@@ -21,6 +21,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
+import { toast } from "sonner";
 
 export default function RolesPage() {
   const { roles, permissions, addRole, updateRole, deleteRole } = useAdmin();
@@ -31,6 +44,10 @@ export default function RolesPage() {
   });
 
   const handleAddRole = () => {
+    if (newRole.name === "" || newRole.permissions.length == 0) {
+      toast("All fields are required");
+      return;
+    }
     addRole(newRole);
     setNewRole({ name: "", permissions: [] });
     setIsAddRoleOpen(false);
@@ -110,12 +127,29 @@ export default function RolesPage() {
               <TableCell>{role.name}</TableCell>
               <TableCell>{role.permissions.join(", ")}</TableCell>
               <TableCell>
-                <Button
-                  variant="destructive"
-                  onClick={() => deleteRole(role.id)}
-                >
-                  Delete
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Button>Delete</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your account and remove your data from our
+                        servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => deleteRole(role.id)}>
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </TableCell>
             </TableRow>
           ))}

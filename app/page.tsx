@@ -5,6 +5,25 @@ import { useAdmin } from "./context/AdminContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
   Select,
   SelectContent,
@@ -12,6 +31,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
+
 import {
   Table,
   TableBody,
@@ -65,7 +86,7 @@ export default function UsersPage() {
   >([]);
   const [sortField, setSortField] = useState<SortField>("name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
-  const pageSize = 5;
+  const pageSize = 10;
 
   useEffect(() => {
     const results = searchQuery
@@ -85,6 +106,10 @@ export default function UsersPage() {
   const totalPages = Math.ceil(getTotalUsers() / pageSize);
 
   const handleAddUser = () => {
+    if (newUser.email === "" || newUser.name === "" || newUser.role === "") {
+      toast("All fields are required");
+      return;
+    }
     addUser(newUser);
     setNewUser({ name: "", email: "", role: "", status: "Active" });
     setIsAddUserOpen(false);
@@ -121,7 +146,9 @@ export default function UsersPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Users Management</h1>
+      <div className="flex flex-row w-fit p-2 rounded-lg border mb-4">
+        <h1 className="text-2xl font-bold">Users Management</h1>
+      </div>
       <div className="flex justify-between items-center mb-4">
         <Input
           placeholder="Search users..."
@@ -226,7 +253,12 @@ export default function UsersPage() {
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.role}</TableCell>
-              <TableCell>{user.status}</TableCell>
+              {user.status == "Active" ? (
+                <TableCell className="text-green-600">{user.status}</TableCell>
+              ) : (
+                <TableCell className="text-red-500">{user.status}</TableCell>
+              )}
+
               <TableCell>
                 <Button
                   variant="outline"
@@ -239,13 +271,30 @@ export default function UsersPage() {
                 >
                   {user.status === "Active" ? "Deactivate" : "Activate"}
                 </Button>
-                <Button
-                  variant="destructive"
-                  className="bg-red-800 hover:bg-red-600"
-                  onClick={() => deleteUser(user.id)}
-                >
-                  Delete
-                </Button>
+
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Button>Delete</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your account and remove your data from our
+                        servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => deleteUser(user.id)}>
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </TableCell>
             </TableRow>
           ))}

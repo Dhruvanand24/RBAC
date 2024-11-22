@@ -1,19 +1,9 @@
 import Link from "next/link";
 import { Users, Shield, Key } from "lucide-react";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu";
 
 export function Navbar() {
   return (
-    <div className="w-full flex justify-center border-b-2 p-1">
+    <div className="w-full flex justify-center  p-1 bg-black text-white">
       <Link
         href="/"
         className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-300"

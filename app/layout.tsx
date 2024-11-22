@@ -4,7 +4,7 @@ import "./globals.css";
 import { Sidebar } from "./components/sidebar";
 import { AdminProvider } from "./context/AdminContext";
 import { Navbar } from "./components/Navbar";
-
+import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,6 +27,7 @@ export default function RootLayout({
               <Navbar />
             </div>
             <main className="flex-1 overflow-y-auto p-8">{children}</main>
+            <Toaster />
           </div>
         </AdminProvider>
       </body>
